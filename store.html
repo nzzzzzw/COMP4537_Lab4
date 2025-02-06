@@ -7,20 +7,20 @@
 </head>
 <body>
     <h1>Add New Word</h1>
-    <div class="form-group">
+    <div>
         <label for="word">Word:</label>
         <input type="text" id="word" required>
     </div>
     <br>
-    <div class="form-group">
+    <div>
         <label for="definition">Definition:</label>
-        <textarea id="definition" rows="4" required></textarea>
+        <textarea id="definition" rows="4" cols="25" required></textarea>
     </div>
     <br>
     <button onclick="addWord()">Submit</button>
     <div id="message"></div>
 
-    <script src="js/lang/en/en.js"></script>
+    <script src="lang/en/en.js"></script>
     <script src="js/store.js"></script>
 </body>
 </html>
