@@ -1,0 +1,48 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+    color: #333;
+    background-color: #fafafa;
+  }
+  
+  h1 {
+    color: #444;
+  }
+  
+  form {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: inline-block;
+    width: 100px;
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  textarea {
+    width: 300px;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  textarea {
+    height: 100px;
+    resize: vertical;
+  }
+  
+  button {
+    padding: 8px 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #4285f4;
+    color: #fff;
+    font-size: 14px;
+  }
+  

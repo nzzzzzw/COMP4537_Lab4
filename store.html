@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store Definition</title>
-    <script src="/lang/en/en.js" defer></script>
-    <script src="/js/store.js" defer></script>
+  <meta charset="UTF-8" />
+  <title>Store a New Definition</title>
+    <link rel="stylesheet" href="css/style.css">
+
 </head>
 <body>
-    <h1>Store a Definition</h1>
-    <input type="text" id="word" placeholder="Enter a word">
-    <br>
-    <br>
-    <textarea id="definition" placeholder="Enter definition"></textarea>
-    <br>
-    <br>
-    <button id="submit">Submit</button>
-    <p id="message"></p>
-</body>
+    <h1 id="pageTitle">Add a new definition</h1>
+  
+    <form id="storeForm">
+      <div>
+        <label for="wordInput">Word:</label>
+        <input type="text" id="wordInput" />
+      </div>
+      <div>
+        <label for="definitionInput">Definition:</label>
+        <textarea id="definitionInput"></textarea>
+      </div>
+      <br>
+      <button type="submit">Submit</button>
+    </form>
+  
+    <div id="result"></div>
+  
+    <script src="lang/en/en.js"></script>
+    <script src="js/store.js"></script>
+  </body>
 </html>

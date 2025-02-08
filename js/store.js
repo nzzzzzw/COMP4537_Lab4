@@ -1,46 +1,74 @@
-class StoreClient {
+class DictionaryStoreApp {
     constructor(apiBaseUrl) {
         this.apiBaseUrl = apiBaseUrl;
-        this.wordInput = document.getElementById("word");
-        this.definitionInput = document.getElementById("definition");
-        this.submitButton = document.getElementById("submit");
-        this.messageDisplay = document.getElementById("message");
-
-        this.submitButton.addEventListener("click", () => this.storeDefinition());
+        this.storeForm = document.getElementById("storeForm");
+        this.resultDiv = document.getElementById("result");
+        this.wordInput = document.getElementById("wordInput");
+        this.definitionInput = document.getElementById("definitionInput");
+        this.bindEvents();
     }
 
-    async storeDefinition() {
+    bindEvents() {
+        if (this.storeForm) {
+            this.storeForm.addEventListener("submit", this.handleSubmit.bind(this));
+        }
+    }
+
+    async handleSubmit(event) {
+        event.preventDefault();
         const word = this.wordInput.value.trim();
         const definition = this.definitionInput.value.trim();
 
-        if (!this.validateInput(word, definition)) return;
+        // check for empty word and definition
+        if (!this.isValidWord(word)) {
+            alert(messages.invalidWord);
+            return;
+        }
+        if (!definition) {
+            alert(messages.invalidWordAndDefinition);
+            return;
+        }
+
+        // request body
+        const requestBody = { word, definition };
 
         try {
-            const response = await fetch(`${this.apiBaseUrl}/api/definitions`, {
+            // post request to the backend
+            const response = await fetch(this.apiBaseUrl, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ word, definition })
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestBody)
             });
 
-            const result = await response.json();
-            this.displayMessage(result.message || messages.success);
+            const data = await response.json();
+
+            // 
+            if (data && data.word) {
+                // if return { word, definition, message, ... }
+                this.resultDiv.textContent = `New word stored:\n${data.word} - ${data.definition}`;
+            } else if (data && data.message) {
+                // if only message "word already exists"
+                this.resultDiv.textContent = data.message;
+            } else {
+                this.resultDiv.textContent = "No valid response from server.";
+            }
+
         } catch (error) {
-            this.displayMessage(messages.serverError);
+            // network error or other errors
+            console.error("Error:", error);
+            this.resultDiv.textContent = messages.errorPrefix + error;
         }
     }
 
-    validateInput(word, definition) {
-        if (!word || !definition || /\d/.test(word)) {
-            this.displayMessage(messages.invalidInput);
-            return false;
-        }
-        return true;
-    }
-
-    displayMessage(msg) {
-        this.messageDisplay.textContent = msg;
+    // only letters and non-empty
+    isValidWord(str) {
+        return /^[A-Za-z]+$/.test(str);
     }
 }
 
-//set API server address
-const storeClient = new StoreClient("http://localhost:3000");
+document.addEventListener("DOMContentLoaded", () => {
+    const apiBaseUrl = "https://yourDomainName2.xyz/api/definitions";
+    const storeApp = new DictionaryStoreApp(apiBaseUrl);
+});

@@ -1,41 +1,59 @@
-class SearchClient {
+class DictionarySearchApp {
     constructor(apiBaseUrl) {
-        this.apiBaseUrl = apiBaseUrl;
-        this.searchInput = document.getElementById("searchWord");
-        this.searchButton = document.getElementById("search");
-        this.resultDisplay = document.getElementById("result");
-
-        this.searchButton.addEventListener("click", () => this.searchDefinition());
+      this.apiBaseUrl = apiBaseUrl;
+      this.searchForm = document.getElementById("searchForm");
+      this.searchResult = document.getElementById("searchResult");
+      this.searchWordInput = document.getElementById("searchWordInput");
+      this.bindEvents();
     }
-
-    async searchDefinition() {
-        const word = this.searchInput.value.trim();
-
-        if (!word || /\d/.test(word)) {
-            this.displayMessage(messages.invalidInput);
-            return;
+  
+    bindEvents() {
+      if (this.searchForm) {
+        this.searchForm.addEventListener("submit", this.handleSearch.bind(this));
+      }
+    }
+  
+    async handleSearch(event) {
+        // prevent the default form submission
+        event.preventDefault();
+      
+        const word = this.searchWordInput.value.trim();
+      
+        if (!this.isValidWord(word)) {
+          alert(messages.invalidWord);
+          return;
         }
-
+      
         try {
-            const response = await fetch(`${this.apiBaseUrl}/api/definitions/?word=${encodeURIComponent(word)}`);
-            const result = await response.json();
-
-            if (result.message) {
-                this.displayMessage(result.message);
-            } else if (result.definition) {
-                this.displayMessage(`${word}: ${result.definition}`);
-            } else {
-                this.displayMessage(messages.wordNotFound);
-            }
+            // get request to the backend
+          const url = `${this.apiBaseUrl}?word=${encodeURIComponent(word)}`;
+          const response = await fetch(url);
+          const data = await response.json();
+      
+          // handle the response
+          if (data.definition) {
+            //display the word and definition
+            const message = `Word: ${data.word}, Definition: ${data.definition}`;
+            document.getElementById("searchResult").innerText = message;
+          } else {
+            // no definition found
+            const message = `Not found: ${data.message || "No definition provided."}`;
+            document.getElementById("searchResult").innerText = message;
+          }
         } catch (error) {
-            this.displayMessage(messages.serverError);
+          // handle network or other errors
+          console.error("Error:", error);
+          document.getElementById("searchResult").innerText = 
+            messages.errorPrefix + error;
         }
+      }
+  
+    isValidWord(str) {
+      return /^[A-Za-z]+$/.test(str);
     }
-
-    displayMessage(msg) {
-        this.resultDisplay.textContent = msg;
-    }
-}
-
-// set API server address
-const searchClient = new SearchClient("http://localhost:3000");
+  }
+  
+  document.addEventListener("DOMContentLoaded", () => {
+    const apiBaseUrl = "https://yourDomainName2.xyz/api/definitions";
+    const searchApp = new DictionarySearchApp(apiBaseUrl);
+  });

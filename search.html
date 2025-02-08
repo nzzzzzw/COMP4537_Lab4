@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Definition</title>
-    <script src="/js/search.js" defer></script>
-    <script src="/lang/en/en.js" defer></script>
+  <meta charset="UTF-8" />
+  <title>Search for a Definition</title>
+    <link rel="stylesheet" href="css/style.css">
+
 </head>
 <body>
-    <h1>Search for a Definition</h1>
-    <input type="text" id="searchWord" placeholder="Enter a word">
-    <button id="search">Search</button>
-    <p id="result"></p>
-</body>
+    <h1 id="pageTitle">Search a Definition</h1>
+  
+    <form id="searchForm">
+      <label for="searchWordInput">Word:</label>
+      <input type="text" id="searchWordInput" />
+      <button type="submit">Search</button>
+    </form>
+  
+    <div id="searchResult"></div>
+  
+    <script src="lang/en/en.js"></script>
+    <script src="js/search.js"></script>
+  </body>
 </html>
