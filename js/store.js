@@ -69,6 +69,6 @@ class DictionaryStoreApp {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const apiBaseUrl = "https://comp4537-lab4-server2-group11.onrender.com/api/definitions/";
+    const apiBaseUrl = "https://comp4537-lab4-server2-group11.onrender.com/api/definitions";
     const storeApp = new DictionaryStoreApp(apiBaseUrl);
 });
