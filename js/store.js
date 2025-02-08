@@ -1,61 +1,46 @@
-class DictionaryStore {
-    constructor() {
-        this.API_URL = 'http://localhost:3000/definitions';
-        this.wordInput = document.getElementById('word');
-        this.definitionInput = document.getElementById('definition');
-        this.messageDiv = document.getElementById('message');
-        
-        // Bind methods
-        this.addWord = this.addWord.bind(this);
-        this.showMessage = this.showMessage.bind(this);
+class StoreClient {
+    constructor(apiBaseUrl) {
+        this.apiBaseUrl = apiBaseUrl;
+        this.wordInput = document.getElementById("word");
+        this.definitionInput = document.getElementById("definition");
+        this.submitButton = document.getElementById("submit");
+        this.messageDisplay = document.getElementById("message");
+
+        this.submitButton.addEventListener("click", () => this.storeDefinition());
     }
 
-    async addWord() {
+    async storeDefinition() {
         const word = this.wordInput.value.trim();
         const definition = this.definitionInput.value.trim();
-        
-        if (!this.isValidInput(word, definition)) return;
+
+        if (!this.validateInput(word, definition)) return;
 
         try {
-            const response = await fetch(this.API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+            const response = await fetch(`${this.apiBaseUrl}/api/definitions`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ word, definition })
             });
-            const data = await response.json();
-            
-            this.showMessage(data.message, !data.error);
-            if (!data.error) this.clearForm();
+
+            const result = await response.json();
+            this.displayMessage(result.message || messages.success);
         } catch (error) {
-            this.showMessage(strings.serverError, false);
+            this.displayMessage(messages.serverError);
         }
     }
 
-    isValidInput(word, definition) {
-        if (!word || !definition) {
-            this.showMessage(strings.fillAllFields, false);
-            return false;
-        }
-        if (/\d/.test(word)) {
-            this.showMessage(strings.noNumbers, false);
+    validateInput(word, definition) {
+        if (!word || !definition || /\d/.test(word)) {
+            this.displayMessage(messages.invalidInput);
             return false;
         }
         return true;
     }
 
-    clearForm() {
-        this.wordInput.value = '';
-        this.definitionInput.value = '';
-    }
-
-    showMessage(message, isSuccess) {
-        this.messageDiv.textContent = message;
-        this.messageDiv.className = isSuccess ? 'success' : 'error';
+    displayMessage(msg) {
+        this.messageDisplay.textContent = msg;
     }
 }
 
-// Initialize on load
-window.onload = () => {
-    const store = new DictionaryStore();
-    document.querySelector('button').onclick = () => store.addWord();
-};
+//set API server address
+const storeClient = new StoreClient("http://localhost:3000");

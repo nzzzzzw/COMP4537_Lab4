@@ -1,6 +1,7 @@
-const strings = {
-    fillAllFields: 'Please fill in all fields',
-    noNumbers: 'Word cannot contain numbers',
-    serverError: 'Error connecting to server',
-    enterWord: 'Please enter a word to search'
+const messages = {
+    success: "Word successfully stored!",
+    invalidInput: "Invalid input. Please enter a valid word and definition.",
+    serverError: "Server error. Please try again later.",
+    wordExists: "Warning! This word already exists in the dictionary.",
+    wordNotFound: "Word not found! Please try another word."
 };

@@ -3,19 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dictionary - Search</title>
+    <title>Search Definition</title>
+    <script src="/js/search.js" defer></script>
+    <script src="/lang/en/en.js" defer></script>
 </head>
 <body>
-    <h1>Search Dictionary</h1>
-    <div>
-        <label for="searchWord">Word:</label>
-        <input type="text" id="searchWord" onkeyup="handleKeyPress(event)" required>
-    </div>
-    <br>
-    <button onclick= "searchWord()">Search</button>
-    <div id="result"></div>
-
-    <script src="lang/en/en.js"></script>
-    <script src="js/search.js"></script>
+    <h1>Search for a Definition</h1>
+    <input type="text" id="searchWord" placeholder="Enter a word">
+    <button id="search">Search</button>
+    <p id="result"></p>
 </body>
 </html>

@@ -3,24 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dictionary - Add Word</title>
+    <title>Store Definition</title>
+    <script src="/lang/en/en.js" defer></script>
+    <script src="/js/store.js" defer></script>
 </head>
 <body>
-    <h1>Add New Word</h1>
-    <div>
-        <label for="word">Word:</label>
-        <input type="text" id="word" required>
-    </div>
+    <h1>Store a Definition</h1>
+    <input type="text" id="word" placeholder="Enter a word">
     <br>
-    <div>
-        <label for="definition">Definition:</label>
-        <textarea id="definition" rows="4" cols="25" required></textarea>
-    </div>
     <br>
-    <button onclick="addWord()">Submit</button>
-    <div id="message"></div>
-
-    <script src="lang/en/en.js"></script>
-    <script src="js/store.js"></script>
+    <textarea id="definition" placeholder="Enter definition"></textarea>
+    <br>
+    <br>
+    <button id="submit">Submit</button>
+    <p id="message"></p>
 </body>
 </html>

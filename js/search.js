@@ -1,51 +1,41 @@
-class DictionarySearch {
-    constructor() {
-        this.API_URL = 'http://localhost:3000/definitions';
-        this.searchInput = document.getElementById('searchWord');
-        this.resultDiv = document.getElementById('result');
-        
-        // Bind methods
-        this.searchWord = this.searchWord.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
-        
-        // Set up event listeners
-        this.searchInput.onkeyup = this.handleKeyPress;
+class SearchClient {
+    constructor(apiBaseUrl) {
+        this.apiBaseUrl = apiBaseUrl;
+        this.searchInput = document.getElementById("searchWord");
+        this.searchButton = document.getElementById("search");
+        this.resultDisplay = document.getElementById("result");
+
+        this.searchButton.addEventListener("click", () => this.searchDefinition());
     }
 
-    async searchWord() {
+    async searchDefinition() {
         const word = this.searchInput.value.trim();
-        
-        if (!word) {
-            this.showResult(strings.enterWord, false);
+
+        if (!word || /\d/.test(word)) {
+            this.displayMessage(messages.invalidInput);
             return;
         }
 
         try {
-            const response = await fetch(`${this.API_URL}?word=${encodeURIComponent(word)}`);
-            const data = await response.json();
-            
-            if (data.definition) {
-                this.showResult(`${data.word}: ${data.definition}`, true);
+            const response = await fetch(`${this.apiBaseUrl}/api/definitions/?word=${encodeURIComponent(word)}`);
+            const result = await response.json();
+
+            if (result.message) {
+                this.displayMessage(result.message);
+            } else if (result.definition) {
+                this.displayMessage(`${word}: ${result.definition}`);
             } else {
-                this.showResult(data.message, false);
+                this.displayMessage(messages.wordNotFound);
             }
         } catch (error) {
-            this.showResult(strings.serverError, false);
+            this.displayMessage(messages.serverError);
         }
     }
 
-    handleKeyPress(event) {
-        if (event.key === 'Enter') this.searchWord();
-    }
-
-    showResult(message, isFound) {
-        this.resultDiv.textContent = message;
-        this.resultDiv.className = isFound ? 'found' : 'not-found';
+    displayMessage(msg) {
+        this.resultDisplay.textContent = msg;
     }
 }
 
-// Initialize on load
-window.onload = () => {
-    const search = new DictionarySearch();
-    document.querySelector('button').onclick = () => search.searchWord();
-};
+// set API server address
+const searchClient = new SearchClient("http://localhost:3000");
