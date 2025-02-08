@@ -1,3 +1,8 @@
+/**
+ * DISCLAIMER: 
+ * This code was developed with the assistance of ChatGPT 
+ * for guidance and improvements.
+ */
 class DictionaryStoreApp {
     constructor(apiBaseUrl) {
         this.apiBaseUrl = apiBaseUrl;
